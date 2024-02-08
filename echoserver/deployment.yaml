@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: echoserver
+  name: echoserver-{{ .Values.instance | default "1" }}
   namespace: default
   labels:
-    app: echoserver
+    app: echoserver-{{ .Values.instance | default "1" }}
     version: v1
 spec:
   replicas: 1
@@ -15,7 +15,7 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: echoserver
+      app: echoserver-{{ .Values.instance | default "1" }}
       version: v1
   template:
     metadata:
@@ -25,11 +25,11 @@ spec:
         prometheus.io/scheme: "http"
         prometheus.io/path: "/metrics"
       labels:
-        app: echoserver
+        app: echoserver-{{ .Values.instance | default "1" }}
         version: v1
     spec:
       containers:
-      - name: echoserver
+      - name: echoserver-{{ .Values.instance | default "1" }}
         image: gijsvandulmen/echoserver:latest
         imagePullPolicy: Always
         resources:
